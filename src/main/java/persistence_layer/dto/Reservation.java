@@ -16,6 +16,7 @@ public class Reservation {
     private int empNo;
     
     private Date bookedAt;
+    private Date bookedTo;
 
     public int getRoomNo() {
         return roomNo;
@@ -47,5 +48,13 @@ public class Reservation {
 
     public void setBookedAt(Date bookedAt) {
         this.bookedAt = bookedAt;
+    }
+    
+    public Date getBookedTo() {
+        return bookedTo;
+    }
+
+    public void setBookedTo(Date bookedTo) {
+        this.bookedTo = bookedAt;
     }
 }
