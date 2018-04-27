@@ -19,6 +19,8 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import main.java.persistence_layer.ConnectionFactory;
 
+import main.java.persistence_layer.implementations.EmployeeDaoIMP;
+
 public class LoginScreenController implements Initializable {
 	
 	@Override
@@ -31,6 +33,7 @@ public class LoginScreenController implements Initializable {
     @FXML private PasswordField txtPassword;
 	@FXML private Button btnLogin; 
     
+	// NOT DONE. YOU HAVE TO PASS THE CONNECTED USER'S NAME TO NEXT STAGE --> HYPERLINK
 	@FXML
 	public void clickLoginButton(ActionEvent event){
 		try{
@@ -40,8 +43,8 @@ public class LoginScreenController implements Initializable {
 			
 			Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
 			window.setResizable(false);
-			window.setHeight(650);
-			window.setWidth(1000);
+			window.setHeight(600);
+			window.setWidth(950);
 			window.setScene(baseScreenScene);
 			window.show();
 		}

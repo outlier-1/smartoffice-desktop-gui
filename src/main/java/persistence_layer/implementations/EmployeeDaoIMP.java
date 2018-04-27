@@ -24,7 +24,6 @@ public class EmployeeDaoIMP implements EmployeesDAO {
 
 	@Override
 	public Employees getEmployee(int no) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
