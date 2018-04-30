@@ -13,8 +13,8 @@ import main.java.persistence_layer.dto.DepartmentEmployee;
  * @author mirac
  */
 public interface DepartmentEmpDAO {
-    public List<DepartmentEmployee> getAllDepManagers();
-    public DepartmentEmployee getDepManager(int id);
+    public List<DepartmentEmployee> getAllDepEmployees(String condition);
+    public DepartmentEmployee getDepEmployees(int id);
     public void addDepEmployee();
     public void updateDepEmployee();
     public void deleteDepEmployee();

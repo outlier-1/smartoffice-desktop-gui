@@ -13,7 +13,7 @@ import main.java.persistence_layer.dto.Employees;
  * @author mirac
  */
 public interface EmployeesDAO {
-    public List<Employees> getAllEmployees();
+    public List<Employees> getAllEmployees(String condition);
     public Employees getEmployee(int no);
     public void addEmployee();
     public void updateEmployee();

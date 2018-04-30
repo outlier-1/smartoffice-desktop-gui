@@ -48,14 +48,7 @@ public class LoginScreenController implements Initializable {
 			window.setScene(baseScreenScene);
 			window.show();
 		}
-		catch(SQLException e) {
-			// Access Denied. Server is Down?
-			System.out.println("Access Denied.");
-		}
-		catch(ClassNotFoundException e){
-			// Driver Issue.
-			System.out.println("Driver issue.");
-		}
+		
 		catch(IOException e) {
 			e.printStackTrace();
 		}

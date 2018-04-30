@@ -26,11 +26,20 @@ public class ConnectionFactory {
      * @throws ClassNotFoundException 
      * @throws SQLException 
      */
-    public static Connection EstablishConnection(String dbUser, String dbPassword) throws ClassNotFoundException, SQLException{
-        Connection conn = null;
-        Class.forName(DRIVER_CLASS_NAME);
-        conn = DriverManager.getConnection(CONNECTION_URL, dbUser, dbPassword);
-        return conn;
+    public static Connection EstablishConnection(String dbUser, String dbPassword){
+    	Connection conn = null;	
+    	try {
+            Class.forName(DRIVER_CLASS_NAME);
+            conn = DriverManager.getConnection(CONNECTION_URL, dbUser, dbPassword);
+        }
+        catch(SQLException e) {
+        	e.printStackTrace();
+        }
+        catch(ClassNotFoundException e){
+        	e.printStackTrace();
+        }
+        finally { /* Will be edited */ }
+    	return conn;
     }
     
 }

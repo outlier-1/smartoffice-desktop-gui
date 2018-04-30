@@ -5,6 +5,11 @@
  */
 package main.java.persistence_layer.implementations;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.List;
 
 import main.java.persistence_layer.ConnectionFactory;
@@ -19,8 +24,24 @@ public class DepartmentDaoIMP implements DepartmentsDAO {
 
 	@Override
 	public List<Departments> getAllDepartments() {
-		// TODO Auto-generated method stub
-		return null;
+		Statement stmt = null;
+		String selectQuery = "SELECT DISTINCT dept_no, dept_name FROM departments ORDER BY dept_name";
+		List<Departments> depList = new ArrayList<Departments>();
+		try{
+			Connection conn = ConnectionFactory.EstablishConnection("root", "sananela17");
+	        stmt = conn.createStatement();
+	        ResultSet rs = stmt.executeQuery(selectQuery);
+	        while (rs.next()) {
+	        	depList.add(new Departments(rs.getInt("dept_no"), rs.getString("dept_name")));	            
+	        }
+	    }
+		catch(SQLException e ){
+	    	e.printStackTrace();
+	    }
+		finally{
+	        /* will be edited*/
+	    }
+		return depList;
 	}
 
 	@Override

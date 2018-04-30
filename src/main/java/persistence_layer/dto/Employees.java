@@ -23,6 +23,17 @@ public class Employees {
     private Date birthDate;
     private Date hireDate;
 
+    public Employees(int empNo, String firstName, String lastName) {
+    	this.empNo = empNo;
+    	this.firstName = firstName;
+    	this.lastName = lastName;
+    }
+    
+    public Employees(String firstName, String lastName) {
+    	this.firstName = firstName;
+    	this.lastName = lastName;
+    }
+    
     public int getEmpNo() {
         return empNo;
     }
