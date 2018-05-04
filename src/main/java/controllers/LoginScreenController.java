@@ -2,30 +2,29 @@ package main.java.controllers;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import main.java.persistence_layer.ConnectionFactory;
-
+import main.java.controllers.BaseScreenController;
+import main.java.persistence_layer.AppConnection;
+import main.java.persistence_layer.LoggedUser;
 import main.java.persistence_layer.implementations.EmployeeDaoIMP;
 
 public class LoginScreenController implements Initializable {
 	
+	private AppConnection conn;
+	
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
-		// will be overridden later.
+		this.conn = new AppConnection(); 
 	}  
 	
 	/** Elements of Login Screen */
@@ -33,24 +32,37 @@ public class LoginScreenController implements Initializable {
     @FXML private PasswordField txtPassword;
 	@FXML private Button btnLogin; 
     
-	// NOT DONE. YOU HAVE TO PASS THE CONNECTED USER'S NAME TO NEXT STAGE --> HYPERLINK
+	
 	@FXML
-	public void clickLoginButton(ActionEvent event){
+	public void clickLoginButton() throws InterruptedException{
 		try{
-			Connection conn = ConnectionFactory.EstablishConnection(txtUsername.getText(), txtPassword.getText());
-			Parent baseScreenView = FXMLLoader.load(getClass().getResource("../../resources/view/BaseScreenView.fxml"));
-			Scene baseScreenScene = new Scene(baseScreenView);
+			conn.setDbUser(txtUsername.getText());
+			conn.setDbPass(txtPassword.getText());
+			conn.EstablishConnection();
+
+			LoggedUser loggedUser = new LoggedUser(new EmployeeDaoIMP().getEmployee(Integer.parseInt(conn.getDbUser()), conn));
+			conn.setLoggedUser(loggedUser);
+
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("../../resources/view/BaseScreenView.fxml"));
+			loader.load();
+			BaseScreenController controller = loader.getController();
+			controller.setConnection(conn);
 			
-			Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
-			window.setResizable(false);
-			window.setHeight(600);
-			window.setWidth(950);
-			window.setScene(baseScreenScene);
-			window.show();
+			Parent baseScreenView = loader.getRoot();
+			Stage baseWindow = new Stage();
+			this.setViewProperties(baseWindow);
+			baseWindow.setScene(new Scene(baseScreenView));
+			baseWindow.show();
 		}
-		
 		catch(IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private void setViewProperties(Stage window){
+		window.setResizable(false);
+		window.setHeight(600);
+		window.setWidth(950);
 	}
 }

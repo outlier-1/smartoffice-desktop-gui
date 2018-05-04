@@ -6,13 +6,14 @@
 package main.java.persistence_layer.implementations;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import main.java.persistence_layer.ConnectionFactory;
+import main.java.persistence_layer.AppConnection;
 import main.java.persistence_layer.dto.Employees;
 import main.java.persistence_layer.dao.EmployeesDAO;
 /**
@@ -21,6 +22,8 @@ import main.java.persistence_layer.dao.EmployeesDAO;
  */
 public class EmployeeDaoIMP implements EmployeesDAO {
 
+	private AppConnection conn;
+	
 	@Override
 	public List<Employees> getAllEmployees(String condition) {
 		Statement stmt = null;
@@ -50,7 +53,7 @@ public class EmployeeDaoIMP implements EmployeesDAO {
 		Statement stmt = null;
 		ResultSet rs = null;
 		try{
-			Connection conn = ConnectionFactory.EstablishConnection("root", "sananela17");
+			Connection conn = AppConnection.EstablishConnection("root", "sananela17");
 	        stmt = conn.createStatement();
 	        rs = stmt.executeQuery(query);
 	    }
@@ -62,9 +65,34 @@ public class EmployeeDaoIMP implements EmployeesDAO {
 	    }
 		return rs;
 	}
+	
 	@Override
-	public Employees getEmployee(int no) {
-		return null;
+	public Employees getEmployee(int no, AppConnection conn) {
+		PreparedStatement stmt = null;
+		String selectQuery = "SELECT emp_no, first_name, last_name, gsm FROM employees WHERE emp_no=?";
+		Employees emp = new Employees();
+		emp.setEmpNo(no);
+		
+		try{
+			if(conn.getConnection() == null) {
+				throw new IllegalArgumentException("Please pass an established connection");
+			}
+			stmt = conn.getConnection().prepareStatement(selectQuery);
+			stmt.setInt(1, no);
+	        ResultSet rs = stmt.executeQuery();
+	        while (rs.next()) {
+	        	emp.setFirstName(rs.getString(2));
+	        	emp.setLastName(rs.getString(3));
+	        	emp.setGsm(rs.getString(4));
+	        }
+	    }
+		catch(SQLException e ){
+	    	e.printStackTrace();
+	    }
+		finally{
+	        /* will be edited*/
+	    }
+		return emp;
 	}
 
 	@Override

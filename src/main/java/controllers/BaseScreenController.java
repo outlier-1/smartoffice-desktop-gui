@@ -3,7 +3,6 @@ package main.java.controllers;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -18,10 +17,14 @@ import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.layout.Border;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import main.java.persistence_layer.AppConnection;
 import javafx.scene.control.TextField;
 
 public class BaseScreenController implements Initializable {
 
+	private AppConnection conn;
+	
+	/* Form Controllers */
 	@FXML private Hyperlink hypName;
 	
 	@FXML private Spinner<String> spHour;
@@ -34,6 +37,13 @@ public class BaseScreenController implements Initializable {
 	@FXML 
 	private void hypClicked() {
 		// Go to Settings.
+	}
+	
+	public void setConnection(AppConnection conn) {
+		this.conn = conn;
+		// Set The HyperText
+		hypName.setText(String.format("%s %s",conn.getLoggedUser().getFirstName(), conn.getLoggedUser().getLastName()));
+		hypName.setBorder(Border.EMPTY);
 	}
 	
 	@FXML
@@ -53,11 +63,7 @@ public class BaseScreenController implements Initializable {
 	
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		
-		// Set The HyperText
-		hypName.setText("Miraç Baydemir");
-		hypName.setBorder(Border.EMPTY);
-		
+			
 		// Initialize The Spinners
 		ObservableList<String> hour = FXCollections.observableArrayList();
 		for(int i=8; i<19; i++) {
@@ -76,7 +82,6 @@ public class BaseScreenController implements Initializable {
 
 		spHour.setValueFactory(hrValueFactory);
 		spMin.setValueFactory(minValueFactory);
-		
 	}
 
 }
